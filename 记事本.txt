@@ -1,0 +1,40 @@
+@param oprCode 操作代码 1:内部添加， 2:上方添加, 3:下方添加, 9:编辑语句, 12:语句上移, 13:语句下移, 50:删除语句
+
+右键菜单操作参数，含有的属性：elmId:操作的元素对象id, seq:语句在函数的序号, tag:语句的tag标志(1:定义变量...100:返回), oprCode : 操作码(1:内部添加， 2:上方添加, 3:下方添加, 9:编辑语句, 12:语句上移, 13:语句下移, 50:删除语句)
+
+
+
+//		//自己不是首节点
+//		if(z[1] != null){
+//			//页面元素
+//			var  brotherNode = $.getBrotherNode(div);
+//			div.parentNode.insertBefore(div,brotherNode);
+//			//元源数据修改
+//			sentences.remove(z[0]);
+//			sentences.insert(index-1,z[0]);
+//			//div.parentNode.removeChild(div);
+//			//div.parentNode.replaceChild(brotherNode,div);
+//		}
+//	}else if (forward == 'down'){
+//		//自己不是尾节点
+//		if(z[2] != null){
+//			//页面元素
+//			var  brotherNode = $.getYoungerBrotherNode(div);
+//			div.parentNode.insertBefore(brotherNode,div);
+//			//元源数据修改
+//			sentences.remove(z[0]);
+//			sentences.insert(index+1,z[0]);
+//		}
+//	}
+
+
+
+//	console.log(sentences);
+//	console.log(z[0]);
+//	var x = getTargetFunctionSentenceInfo( div );	//----判断语句对象----
+//	if( x == null ){
+//		return;
+//	}
+//	var elm = x[0]; //$OprHelper.functionSentenceDiv 或 id为$funcStc + seq的语句div
+//	var tag = x[1];	//语句体对应的tag，$OprHelper.functionSentenceDiv时为0, 其他为：1,2,3,7,8,100,11,12,13,21
+//	var seq = x[2];	//语句体对应的seq，$OprHelper.functionSentenceDiv时为0

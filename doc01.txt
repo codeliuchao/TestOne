@@ -1,0 +1,417 @@
+【公共js库【
+(*)弹框、自定alert、透明遮罩、loading罩
+(*)网络访问接口、页面跳转库
+
+【函数处理种类】
+(1)页面1处理逻辑控制本页面局部变化
+(2)页面1调用外部接口、处理逻辑控制本页面局部变化
+(3)页面1不带参数跳转到页面2
+(4)页面1携带参数跳转到页面2，页面2初始化处理逻辑
+(5)页面1携带参数调用外部接口、处理逻辑、跳转到页面2，页面2初始化处理逻辑
+
+var dataTypeName = $.getValueFromKvArray( $OprHelper.varDataType, params[j].dataType );
+var func = $.getFromArrayByMatchObj( $OprHelper.pageMetaHelper.script.functions, { name : $OprHelper.functionSentenceOpr.currentEditFunctionName } )[0];
+var param = $.getFromArrayByMatchObj( func.params, { name : name } )[0];
+var params = findFunctionFromMeta( name ).params;
+
+{
+	page:{		//页面
+		elmSeqValue:3,		//元素自定序号当前值
+		body:{		//页面body
+			children:[	//body内的子元素
+				{	//一个子元素
+					seq:1,		//元素的自定序号值
+					tag:'div',	//元素标签【div、span、text、button、link、checkbox、radio、select、option、img】
+					id:'xx1',	//元素的id
+					name:'xxXX1',	//元素的名称
+					value:'',	//值，text、button、checkbox、radio、option有该属性
+					innerText:'',	//内部值，span、link、option有该属性
+					url:'',	//地址，超链接的href、图片的src【保留属性】
+					styleClass:'',		//元素的样式表名称
+					style:{			//元素的样式属性集合，一律单项属性
+						height:'100',		//高度，默认单位：px，支持%
+						borderTopWidth:'1',		//上边框宽度，默认单位：px
+						borderTopStyle:'solid',		//上边框宽度，默认单位：px
+						borderTopColor:'#004455'		//上边框颜色
+						...		//其他属性
+					},
+					action : {	//执行动作
+						click : '',	//点击时执行的函数
+					}
+					children:[]	//元素的子元素
+				}
+			]
+		},
+	}
+	script:{	//页面脚本
+		pageVars : [	//页面变量
+			//dataType(数据类型)：1:number, 2:string, 3:date, 4:object, 5:list
+			{ name : '当日订单条数', dataType : '1', value : "0", remark : "当日订单条数" },
+			{ name : '当日订单累计金额', dataType : '2', value : "0", remark : "当日订单累计金额" },
+			{ name : '显示的当前日期', dataType : '4', value : "2016-01-01 12:20:19", remark : "显示的当前日期" }
+		],
+		
+		functions : [	//函数
+			{ 
+				name : '查询订单信息', 
+				params : [ { 'name' : '', 'dataType' : 1, 'remark' : '' }, { 'name' : '', 'dataType' : 2, 'remark' : '' } ], 
+				returnType : 0, //返回值类型, 0:空
+				remark : '调用接口查询', 
+				sentenceSeqValue : 0,	//语句的序号
+				
+				//语句单元标签(tag)，1:定义变量(var)， 2:调用函数(call)， 3:变量赋值(ev)， 7:继续循环continue， 8:跳出循环break, 10:函数返回(return)， 11:如果(if)，12:否则如果(elseif)，13:否则(else)， 21:循环(while(true)), 98:注释, 99:空行, 100:返回值 
+				//字面量、变量、参数数据类型(dataType)：0:空, 1:number, 2:string, 3:date, 4:object, 5:list
+				
+				sentences : [	//语句单元集合
+					{	//【1:定义变量】var【变量】
+						'seq' : 1,	//序号
+						'tag' : 1,	//语句单元标签
+						'remark' : '定义一个变量xx',	//备注
+						'name' : '临时累积值0',	//变量名【当删除局部变量时，须检查用到的位置，做出提示】
+						'dataType' : 1,	//数据类型，1:number, 2:string, 3:date, 4:object, 5:list
+						'value' : '5'	//初始值
+					},
+					
+					{	//【2:调用函数】callFunc【调用】
+						'seq' : 2,	//序号
+						'tag' : '2', 
+						'remark' : '定义一个变量xx',	//备注
+						'name' : '获取订单金额函数', 	//调用函数的名称
+						'funcType' : 1,	//函数类型  1:系统(预置)函数, 2:自定义函数
+						'params' : [  //参数集合
+							{
+								'valueType' : 0,	//参数类型， 0:空
+							},
+
+							{
+								'valueType' : 1,	//参数类型， 1:字面值
+								'dataType' : 1,	//参数数据类型，当pType为1时有这项，取值1:number、2:string、3:date
+								'value' : 5,	//参数值(字面量)，当pType为1时有这项
+							},
+
+							{
+								'valueType' : 2,	//参数类型， 2:变量
+								'name' : '',	//变量名，当pType为2时有这项
+								'vsType' : 	//变量作用域类型，1:系统变量， 2:页面变量, 3:(函数内)局部变量
+								'attrs' : []	//属性
+							}
+							{
+								'valueType' : 3,	//参数类型， 3:母函数参数
+								'name' : '',	//变量名，当pType为2时有这项
+								'attrs' : []	//属性
+							}
+						 ],
+						
+					},
+
+					{	//【3:赋值】eval【赋值】
+						'seq' : 3,	//序号
+						'tag' : '3',	//逻辑标签
+						'remark' : 'xx做赋值操作',	//备注
+						'name' : '临时累积值1',	//变量名(不区分页面或局部)
+						'vsType' : 	//变量作用域类型，1:系统变量， 2:页面变量, 3:(函数内)局部变量
+						'attrs' : [ '', '' ],	//子级属性
+						'sentences' :[	//子语句
+							{	//【操作符】
+								'opr' : 1,	//1:操作符((、)、+、-、*、/)
+								'value' : '(',	//当opr为1时，支持：()+-*/
+							},
+
+							{	//【字面量】
+								'opr' : 2,	//2:字面量
+								'dataType' : 99,	//参数数据类型，当opr为2时有这项，取值0:null、1:number、2:string、3:date、4:map
+								'value' : 5,	//参数值(字面量)，当opr为2时有这项
+							},
+
+							{	//【变量及属性】(map属性、数组某元素)
+								'opr' : 3,	//3:取变量值
+								'name' : '临时累积值0',	//变量名
+								'vsType' : //变量作用域类型，1:系统变量， 2:页面变量, 3:(函数内)局部变量
+								'attrs' : [''],	//子属性，当变量多表示子子..层架【临时累积值0.子属性01.孙属性02】；下标，多个表示多维下标【多维数组[1][2]...】
+							},
+
+							{	//【调用函数】
+								'opr' : 4,	//4:调用函数
+								'name' : '获取订单金额函数',	//函数名称
+								'params' : [  //参数集合
+									{
+										'valueType' : 0,	//参数类型， 0:空
+									},
+
+									{
+										'valueType' : 1,	//参数类型， 1:字面值
+										'dataType' : 1,	//参数数据类型，当pType为1时有这项，取值0:null、1:number、2:string、3:date、4:map
+										'value' : 5,	//参数值(字面量)，当pType为1时有这项
+									},
+
+									{
+										'valueType' : 2,	//参数类型， 2:变量
+										'name' : '',	//变量名，当pType为2时有这项
+										'vsType' : 	//变量作用域类型，1:系统变量， 2:页面变量, 3:(函数内)局部变量
+										'attrs' : []	//属性
+									}
+								 ],
+							}
+
+							{	//【母函数参数】
+								'opr' : 5,	//5:母函数参数
+								'name' : '临时累积值0',	//参数名
+								'attrs' : [''],	//子属性，当变量多表示子子..层架【临时累积值0.子属性01.孙属性02】；下标，多个表示多维下标【多维数组[1][2]...】
+							},
+						]
+					},
+					
+					
+					{	//【7:循环继续continue】continue【继续】
+						'seq' : 1,	//序号
+						'tag' : 7,
+					},
+
+					{	//【8:跳出循环break】break【跳出】
+						'seq' : 1,	//序号
+						'tag' : 8,
+					},
+					
+					{	//【100:函数返回(return)】return【返回】
+						'seq' : 1,	//序号
+						'tag' : 10,	//语句单元标签
+						'sentences' :[	//语句，同变量赋值
+							... //语句同赋值
+						]
+					},
+
+					{	//【11:判断if】【12:判断elseif】【13:判断else】if、elseif、else【如果】【否则如果】【否则】
+						'seq' : 1,	//序号
+						 'tag' : 11,
+						 'conditions' : [ 	//条件，当tag为11和12时，有这一项
+							{	//【1:操作符】
+								'opr' : 1,	//1:操作符((、)、+、-、*、/、||、&&、==、>、>=、<、<=)
+								'value' : '(',	//当opr为1时，支持：()+-*/
+							},
+
+							{	//【字面量】
+								'opr' : 2,	//2:字面量
+								'dataType' : 99,	//参数数据类型，当opr为2时有这项，取值0:null、1:number、2:string、3:date、4:map
+								'value' : 5,	//参数值(字面量)，当opr为2时有这项
+							},
+
+							{	//【变量】
+								'opr' : 3,	//3:取变量值
+								'name' : '临时累积值0',	//变量名
+							},
+
+							{	//【调用函数】
+								'opr' : 4,	//4:调用函数
+								'seq' : 5,	//seq
+								'name' : '获取订单金额函数',	//函数名称
+								'params' : [  //参数集合
+									{
+										'valueType' : 0,	//参数类型， 0:空
+									},
+
+									{
+										'valueType' : 1,	//参数类型， 1:字面值
+										'dataType' : 1,	//参数数据类型，当pType为1时有这项，取值0:null、1:number、2:string、3:date、4:map
+										'value' : 5,	//参数值(字面量)，当pType为1时有这项
+									},
+
+									{
+										'valueType' : 2,	//参数类型， 2:变量
+										'name' : '',	//变量名，当pType为2时有这项
+									}
+								 ],
+							}
+							{	//【母函数参数】
+								'opr' : 5,	//5:母函数参数
+								'name' : '临时累积值0',	//参数名
+								'attrs' : [''],	//子属性，当变量多表示子子..层架【临时累积值0.子属性01.孙属性02】；下标，多个表示多维下标【多维数组[1][2]...】
+							},
+						],
+						'sentences' :[	//语句
+							...//所有语句
+						]
+					},
+
+					{	//【21:循环while( true )】【循环】
+						'seq' : 1,	//序号
+						'tag' : 21,
+						'sentences' :[	//语句
+							...//所有语句
+						]
+					}
+
+					{	//【98:注释】【备注】
+						'seq' : 1,	//序号
+						'tag' : 98,
+						'comment' : '注释，调用函数'	//注释信息
+					},
+
+					{	//【99:空行】【空行】
+						'seq' : 1,	//序号
+						'tag' : 99,
+					},
+				]
+				
+				
+			 }
+			
+			
+			
+		]
+		
+		
+	},
+}
+--------------------------------------------------------------------------------------------------------------------------
+/**
+ * 通用移动(上移、下移)，元数据+显示
+ * @param moveDirection : 移动方向，up:上移, down:下移
+ * @param selfInMetaList : 自己(元数据)所在的元数据数组
+ * @param selfMetaIndex : 自己(元数据)在元数据数组中的下标
+ * @param elm : 元素对象
+ */
+function commonMoveUpDown( moveDirection, selfInMetaList, selfMetaIndex, elm ){
+	var isMoveElm = true;//是否移动元素(最头个元素无法上移，最尾个元素无法下移)
+	
+	//----移动元数据----
+	if( selfInMetaList != null && selfMetaIndex != null ){
+		if( ( moveDirection == 'up' && selfMetaIndex == 0 ) || ( moveDirection == 'down' && selfMetaIndex == selfInMetaList.length - 1 ) ){
+			isMoveElm = false;
+		}else{
+			for( var d = 0; d < selfInMetaList.length; d ++ ){
+				if( d == selfMetaIndex ){
+					if( moveDirection == 'up' ){
+						if( d > 0 ){
+							var tempMeta = selfInMetaList[d];
+							selfInMetaList[d] = selfInMetaList[d - 1];
+							selfInMetaList[d - 1] = tempMeta;
+						}
+					}else{
+						if( d < selfInMetaList.length - 1 ){
+							var tempMeta = selfInMetaList[d];
+							selfInMetaList[d] = selfInMetaList[d + 1];
+							selfInMetaList[d + 1] = tempMeta;
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	//----移动元素----
+	if( isMoveElm ){
+		var elms = elm.parentNode.children;
+		for( var c = 0; c < elms.length; c ++ ){
+			if( elm == elms[c] ){
+				if( moveDirection == 'up' ){
+					if( c > 0 ){
+						var tempElm = elms[c - 1];//兄节点
+						tempElm.parentNode.removeChild( elm );
+						tempElm.parentNode.insertBefore( elm, tempElm );
+					}
+				}else{
+					if( c < elms.length - 1 ){
+						var tempElm = elms[c + 1];//弟节点
+						elm.parentNode.removeChild( elm );
+						if( tempElm.nextSibling ){ //弟的弟节点
+							tempElm.parentNode.insertBefore( elm, tempElm.nextSibling );
+						}else{
+							tempElm.parentNode.appendChild( elm );
+						}
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+showCreateAppResBox openWbEditAppRes openWbCreateAppRes
+
+打开小窗口:【打开小窗口】:openWb,openWbEdit,openWbEditPageVar:【打开小窗口】编辑(添加或修改)页面变量
+	openEditFuntion -> openWbEditFuntion:【打开小窗口】编辑(添加或修改)函数
+	openEditFunctionParam -> openWbEditFunctionParam【打开小窗口】编辑(添加或修改)函数参数
+	openEditSentenceVar -> openWbEditSentenceVar【打开小窗口】编辑(添加或修改)语句:(1)定义变量
+	openEditSentenceCallFunc -> openWbEditSentenceCallFunc【打开小窗口】编辑(添加或修改)语句:(2)调用函数
+
+
+	openEditSentenceEval -> openWbEditSentenceEval【打开小窗口】编辑(添加或修改)语句:(3)赋值
+
+
+	openEditSentenceLgjg -> openWbEditSentenceLgjg【打开小窗口】编辑(添加或修改)语句:逻辑(11)if，(12)elseif
+
+	openEditSentenceComment -> openWbEditSentenceComment【打开小窗口】编辑(添加或修改)语句:(98)注释
+	
+	openEditSentenceReturn -> openWbEditSentenceReturn【打开小窗口】编辑(添加或修改)语句:(100)返回
+
+
+	openInputLiteral -> openWbInputLiteral【打开小窗口】输入字面量
+	openChooseSymbol -> openWbChooseSymbol【打开小窗口】选择操作符
+
+
+	openChooseFunction -> openWbChooseFunction【打开小窗口】选择函数，用于：编辑(添加或修改)语句:(2)调用函数、编辑(添加或修改)语句:(3)调赋值->调用函数...
+	openChooseVarAndAttr -> openWbChooseVarAndAttr【打开小窗口】选择变量及属性，用于：编辑(添加或修改)语句:(2)调用函数、编辑(添加或修改)语句:(3)调赋值->调用函数...
+
+
+操作:【操作】:edit,editPageVar:【操作】编辑(添加或修改)页面变量
+	editFunction:【操作】编辑(添加或修改)函数
+	editSentenceVar:【操作】编辑(添加或修改)语句:(1)定义变量
+	
+	editSentenceWhile:【操作】编辑(添加或修改)语句:(21)循环
+	editSentenceReturn:【操作】编辑(添加或修改)语句:(100)返回
+	
+插入表格行html:
+	makePageVarTrHtml -> insertTrHtmlPageVar:【插入表格行html】页面变量
+	makeFunctionTrHtml -> insertTrHtmlFunction:【插入表格行html】函数
+	makeFunctionParamTrHtml -> insertTrHtmlFunctionParam:【插入表格行html】函数参数
+	
+	
+插入语句块html:appendSentenceHtml...
+	makeSentenceVarDivHtml -> appendSentenceHtmlVar:【插入语句块html】语句:(1)定义变量
+	makeSentenceCallFuncDivHtml -> appendSentenceHtmlCallFunc:【插入语句块html】语句:(2)调用函数
+
+	makeSentenceEvalDivHtml -> appendSentenceHtmlEval:【插入语句块html】语句:(3)赋值
+
+
+	makeSentenceContinueDivHtml - > appendSentenceHtmlContinue:【插入语句块html】语句:(7)循环继续
+	makeSentenceBreakDivHtml -> appendSentenceHtmlBreak:【插入语句块html】语句:(8)跳出循环
+
+	makeSentenceLgjgDivHtml -> appendSentenceHtmlLgjg:【插入语句块html】语句:逻辑判断(11)if，(12)elseif, (13)else
+	
+	makeSentenceWhileDivHtml -> appendSentenceHtmlWhile:【插入语句块html】语句:(21)循环
+	
+	makeSentenceCommentDivHtml -> appendSentenceHtmlComment:【插入语句块html】语句:(98)注释
+	makeSentenceBlankLineDivHtml -> appendSentenceHtmlBlankLine:【插入语句块html】语句:(99)空行
+
+	makeSentenceReturnDivHtml -> appendSentenceHtmlReturn:【插入语句块html】语句:(100)返回
+
+生成片段html:
+	makeShowCallFuncHtml -> makeFragmentHtmlCallFunc:【生成片段html】调用函数
+
+	makeShowVarAndAttrsHtml -> makeFragmentHtmlVarAndAttrs:【生成片段html】变量及属性
+	makeLiteralHtml -> makeFragmentHtmlLiteral:【生成片段html】字面量
+	makeSymbolHtml -> makeFragmentHtmlSymbol:【生成片段html】操作符
+	makeOperatUddHtml -> makeFragmentHtmlOperatUdd:【生成片段html】单元行操作(上移、下移、删除)
+	makeHiddenWithJsonValueHtml -> makeFragmentHtmlHiddenJson:【生成片段html】隐藏的json值
+
+
+插入插入小窗行html:
+	【插入语句块html】定义变量
+	wbAppendClHtmlVarAttrInput
+	chooseSymbolValue -> wbChooseSymbolValue
+
+changeDataTypeAutoFillValue -> changePrDataTypeAutoFillValue
+
+
+【显示div】
+toEditFunctionDtl -> showDivEditFunctionInfo
+------------------------------------
+chooseVarNameAndVsType -> wbChooseVarNameAndVsType
+makeVarAttrInputHtml -> wbAppendClHtmlVarAttrInput
+----------------------------------------------------------
+<span class="graySmlBtn1" style="margin-left:5px;" onclick="openWbInputLiteral( '添加输入值', 'forWbCallFuncAddParam' );">添加输入值</span>
+<span class="graySmlBtn1" style="margin-left:5px;" onclick="openWbChooseSymbol( '选择符号', 'forWbCallFuncAddParam' );">添加空值</span>
